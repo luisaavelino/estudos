@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Calculo com Café ☕</title>
+	<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+	<div class="container">
+		<h1>Tabuada de 1 a 10</h1>
+		<div class="tabuada-container">
+			<div class="tabuada-table" id="tabuada1"></div>
+			<div class="tabuada-table" id="tabuada2"></div>
+			<div class="tabuada-table" id="tabuada3"></div>
+			<div class="tabuada-table" id="tabuada4"></div>
+			<div class="tabuada-table" id="tabuada5"></div>
+			<div class="tabuada-table" id="tabuada6"></div>
+			<div class="tabuada-table" id="tabuada7"></div>
+			<div class="tabuada-table" id="tabuada8"></div>
+			<div class="tabuada-table" id="tabuada9"></div>
+			<div class="tabuada-table" id="tabuada10"></div>
+		</div>
+
+		<hr>
+
+		<h2>Calculo com Café ☕</h2>
+		<div class="calculadora">
+			<div class="display">
+				<input type="text" id="display" disabled>
+			</div>
+			<div class="buttons">
+				<button onclick="adicionarValor(7)">7</button>
+				<button onclick="adicionarValor(8)">8</button>
+				<button onclick="adicionarValor(9)">9</button>
+				<button onclick="operacao('+')">+</button>
+
+				<button onclick="adicionarValor(4)">4</button>
+				<button onclick="adicionarValor(5)">5</button>
+				<button onclick="adicionarValor(6)">6</button>
+				<button onclick="operacao('-')">-</button>
+
+				<button onclick="adicionarValor(1)">1</button>
+				<button onclick="adicionarValor(2)">2</button>
+				<button onclick="adicionarValor(3)">3</button>
+				<button onclick="operacao('*')">X</button>
+
+				<button onclick="adicionarValor(0)">0</button>
+				<button onclick="limparDisplay()">C</button>
+				<button onclick="apagarUltimoCaractere()">C</button>
+				<button onclick="operacao('/')">/</button>
+
+				<button onclick="calcularResultado()">=</button>
+			</div>
+		</div>
+	</div>
+
+	<script src="script.js"></script>
+</body>
+
+</html>
