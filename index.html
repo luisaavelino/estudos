@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<title>Página Inicial</title>
+	<style>
+		body {
+			font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+			background: #e0e5ec;
+			height: 100vh;
+			margin: 0;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			flex-direction: column;
+			gap: 20px;
+		}
+
+		h1 {
+			color: #006aff;
+			margin-bottom: 40px;
+		}
+
+		.btn {
+			background: #006aff;
+			color: white;
+			border: none;
+			padding: 15px 30px;
+			border-radius: 10px;
+			font-size: 1.2rem;
+			cursor: pointer;
+			box-shadow: 6px 6px 12px #0051cc, -6px -6px 12px #1579ff;
+			transition: background-color 0.3s ease;
+			text-decoration: none;
+			display: inline-block;
+		}
+
+		.btn:hover {
+			background-color: #004fcc;
+		}
+	</style>
+</head>
+
+<body>
+	<h1>Escolha uma calculadora</h1>
+	<a href="calculadora.html" class="btn">Calculadora Estilosa</a>
+	<a href="calculadora/index.html" class="btn">Outra Calculadora</a>
+</body>
+
+</html>

@@ -1,0 +1,232 @@
+<<!DOCTYPE html>
+	<html lang="pt-BR">
+
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width,initial-scale=1" />
+		<title>Calculadora Estilosa</title>
+		<style>
+			* {
+				box-sizing: border-box;
+				margin: 0;
+				padding: 0;
+			}
+
+			html,
+			body {
+				height: 100%;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				background: #e0e5ec;
+				font-family: 'Segoe UI', sans-serif;
+			}
+
+			.calculator {
+				background: #006aff;
+				border-radius: 20px;
+				box-shadow: 8px 8px 16px #03e70f, -8px -8px 16px #ff0000;
+				padding: 20px;
+				width: 320px;
+			}
+
+			.display {
+				background: #e92222;
+				border-radius: 12px;
+				padding: 20px;
+				margin-bottom: 15px;
+				font-size: 2rem;
+				text-align: right;
+				color: #333;
+				box-shadow: inset 4px 4px 8px #a3b1c6, inset -4px -4px 8px #ffffff;
+				overflow-x: auto;
+			}
+
+			.keys {
+				display: grid;
+				grid-template-columns: repeat(4, 1fr);
+				gap: 15px;
+			}
+
+			.key {
+				padding: 20px;
+				font-size: 1.2rem;
+				border-radius: 12px;
+				border: none;
+				background: #e0e5ec;
+				box-shadow: 4px 4px 8px #a3b1c6, -4px -4px 8px #ffffff;
+				cursor: pointer;
+				transition: transform .1s;
+				user-select: none;
+			}
+
+			.key:active {
+				transform: scale(0.96);
+			}
+
+			.key.oper {
+				color: #f57c00;
+			}
+
+			.key.func {
+				color: #1976d2;
+			}
+
+			.equal {
+				grid-row: span 2;
+				background: #ff7043;
+				color: white;
+				box-shadow: 4px 4px 8px #c63f17, -4px -4px 8px #ff9a72;
+			}
+
+			.zero {
+				grid-column: span 2;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="calculator">
+			<div class="display" id="display">0</div>
+			<div class="keys">
+				<button class="key func" data-action="clear">AC</button>
+				<button class="key func" data-action="back">←</button>
+				<button class="key oper" data-action="divide">÷</button>
+				<button class="key oper" data-action="multiply">×</button>
+
+				<button class="key" data-number="7">7</button>
+				<button class="key" data-number="8">8</button>
+				<button class="key" data-number="9">9</button>
+				<button class="key oper" data-action="subtract">−</button>
+
+				<button class="key" data-number="4">4</button>
+				<button class="key" data-number="5">5</button>
+				<button class="key" data-number="6">6</button>
+				<button class="key oper" data-action="add">+</button>
+
+				<button class="key" data-number="1">1</button>
+				<button class="key" data-number="2">2</button>
+				<button class="key" data-number="3">3</button>
+				<button class="key equal" data-action="calculate">=</button>
+
+				<button class="key zero" data-number="0">0</button>
+				<button class="key" data-action="decimal">.</button>
+			</div>
+		</div>
+
+		<script>
+			const display = document.getElementById('display');
+			let current = '0';
+			let previous = '';
+			let op = null;
+			let shouldResetCurrent = false; // flag para saber se deve resetar current no próximo número
+
+			function updateDisplay() {
+				display.textContent = current;
+			}
+
+			function handleNumber(num) {
+				if (current === '0' || shouldResetCurrent) {
+					current = num;
+					shouldResetCurrent = false;
+				} else {
+					current += num;
+				}
+			}
+
+			function handleDecimal() {
+				if (shouldResetCurrent) {
+					current = '0.';
+					shouldResetCurrent = false;
+				} else if (!current.includes('.')) {
+					current += '.';
+				}
+			}
+
+			function handleOperator(nextOp) {
+				if (op !== null && !shouldResetCurrent) {
+					// se já tinha uma operação e o current não foi resetado, calcula antes
+					current = evaluate();
+					if (current === 'Erro') {
+						clearAll();
+						updateDisplay();
+						return;
+					}
+				}
+				previous = current;
+				op = nextOp;
+				shouldResetCurrent = true; // no próximo número, resetar current
+			}
+
+			function evaluate() {
+				const a = parseFloat(previous);
+				const b = parseFloat(current);
+				if (isNaN(a) || isNaN(b)) return 'Erro';
+				let result;
+				switch (op) {
+					case 'add':
+						result = a + b;
+						break;
+					case 'subtract':
+						result = a - b;
+						break;
+					case 'multiply':
+						result = a * b;
+						break;
+					case 'divide':
+						if (b === 0) return 'Erro';
+						result = a / b;
+						break;
+					default:
+						return 'Erro';
+				}
+				return String(result);
+			}
+
+			function clearAll() {
+				current = '0';
+				previous = '';
+				op = null;
+				shouldResetCurrent = false;
+			}
+
+			function backspace() {
+				if (shouldResetCurrent) return; // não faz nada se precisa resetar
+				if (current.length > 1) {
+					current = current.slice(0, -1);
+				} else {
+					current = '0';
+				}
+			}
+
+			document.querySelector('.keys').addEventListener('click', e => {
+				const { number, action } = e.target.dataset;
+				if (!e.target.classList.contains('key')) return;
+
+				if (number) {
+					handleNumber(number);
+				} else if (action === 'decimal') {
+					handleDecimal();
+				} else if (['add', 'subtract', 'multiply', 'divide'].includes(action)) {
+					handleOperator(action);
+				} else if (action === 'calculate') {
+					if (op && previous !== '') {
+						current = evaluate();
+						previous = '';
+						op = null;
+						shouldResetCurrent = true;
+					}
+				} else if (action === 'clear') {
+					clearAll();
+				} else if (action === 'back') {
+					backspace();
+				}
+				updateDisplay();
+			});
+
+			updateDisplay();
+
+		</script>
+	</body>
+
+	</html>
